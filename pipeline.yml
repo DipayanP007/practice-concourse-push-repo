@@ -1,12 +1,28 @@
 ---
-platform: linux
-image_resource:
-    type: registry-image
+resources:
+  - name: code
+    type: git
+    icon: github
     source:
-        repository: ubuntu
-inputs:
-    - name: res
-run:
-    path: cat
-    args:
-        - res/file-version-2
+        uri: https://github.com/DipayanP007/practice-concourse-push-repo.git
+        
+
+jobs:
+    - name: first-job
+      plan:
+        - get: code
+          params: {branch: master}
+        - task: my-task
+          
+          config:
+            platform: linux
+            image_resource:
+                type: registry-image
+                source:
+                    repository: ubuntu
+            inputs:
+                - name: code
+            run:
+                path: cat
+                args:
+                 - code/resource/file-version-1   
